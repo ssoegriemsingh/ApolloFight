@@ -2,19 +2,23 @@
 package packages;
 
 // Imports:
+import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
 import packages.Debug;
-
 
 // Class:
 public class Character {
 	
 	// Constants:
 	private static final Debug DEBUG = new Debug();
-	private String NAME;
-	private String ATK1;
-	private String ATK2;
-	private String DEF1;
-	private String DEF2;
+	
+	private  List<String> ATKOPTIONS = new ArrayList<>();
+	private  List<String> DEFOPTIONS = new ArrayList<>();
+	
+	// Global vars:
+	private String name;
+	private int hitpoints = 3;
 	
 	// Main:
 	public static void main(String[] args) {
@@ -23,33 +27,61 @@ public class Character {
 	
 	// Constructors:
 	public Character(String character) {		
-		NAME = "Sheik";
+		name = "Sheik";
+		
+		ATKOPTIONS.addAll(Arrays.asList("Boardgame Day", "C# coding style"));
+		DEFOPTIONS.addAll(Arrays.asList("Bollywood", "Suriname time"));
+		
+		// "Boardgame Day"; 	It worked, Nik lost at a boardgame
+		// "C# coding style"; 	It worked, Nik is confused by the coding style
+		
+		// "Bollywood";			It worked, Sheik danced out of the way
+		// "Suriname time";		It worked, Sheik was to late to get hit
 	}
 	
 	public Character(int character) {
-		NAME = "Nik";
+		name = "Nik";
+		
+		ATKOPTIONS.addAll(Arrays.asList("Arial Ace", "Salesforce"));
+		DEFOPTIONS.addAll(Arrays.asList("I'm sorry", "The Russian bear"));
+		
+		// "Arial Ace";			It worked, Sheik got dizzy from the loop-the-loops
+		// "Salesforce";		it worked, Sheik was bored to sleep
+		
+		// "I'm sorry";			It worked, Nik charmed his way out
+		// "The Russian bear";	It worked, Nik takes no shit from others
 	}
 	
 	public String getName() {
-		return NAME;
+		return name;
 	}
 	
-	// Options:
-	public void Options(Character character) {
-		if (character.NAME == "Sheik") {			
-			ATK1 = "Boardgame Day"; 	// It worked, Nik lost at a boardgame
-			ATK2 = "C# coding style"; 	// It worked, Nik is confused by the coding style
-			
-			DEF1 = "Bollywood";			// It worked, Sheik danced out of the way
-			DEF2 = "Suriname time";		// It worked, Sheik was to late to get hit
-		} else {			
-			ATK1 = "Arial Ace";			// It worked, Sheik got dizzy from the loop-the-loops
-			ATK2 = "Salesforce";		// it worked, Sheik was bored to sleep
-			
-			DEF1 = "I'm sorry";			// It worked, Nik charmed his way out
-			DEF2 = "The Russian bear";	// It worked, Nik takes no shit from others
+	// getHitpoints
+	public int getHitpoints() {
+		return hitpoints;
+	}
+	
+	// getAttackOptions:
+	public List<String> getAttackOptions() {
+		return ATKOPTIONS;
+	}
+	
+	// getDefenseOptions:
+	public List<String> getDefenseOptions() {
+		return DEFOPTIONS;
+	}
+	
+	public void attack(int atk) {
+		switch(atk) {
+			case 1:
+			System.out.println(name + " used " + ATKOPTIONS.get(0));
+			break;
+			case 2:
+			System.out.println(name + " used " + ATKOPTIONS.get(1));
+			break;
+			default:
+			System.out.println("default action");
+			break;
 		}
-		
-		System.out.println(ATK1 + "\n" + ATK2 + "\n" + DEF1 + "\n" + DEF2);
 	}
 }
