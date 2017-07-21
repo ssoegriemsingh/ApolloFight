@@ -71,17 +71,31 @@ public class Character {
 		return DEFOPTIONS;
 	}
 	
-	public void attack(int atk) {
-		switch(atk) {
-			case 1:
-			System.out.println(name + " used " + ATKOPTIONS.get(0));
-			break;
-			case 2:
-			System.out.println(name + " used " + ATKOPTIONS.get(1));
-			break;
-			default:
-			System.out.println("default action");
-			break;
+	public void action(boolean attack, int option) {
+		if (attack) {
+			switch(option) {
+				case 1:
+				System.out.println(name + " used " + ATKOPTIONS.get(0));
+				break;
+				case 2:
+				System.out.println(name + " used " + ATKOPTIONS.get(1));
+				break;
+				default:
+				System.out.println("default action");
+				break;
+			}
+		} else {
+			switch(option) {
+				case 1:
+				System.out.println(name + " used " + DEFOPTIONS.get(0));
+				break;
+				case 2:
+				System.out.println(name + " used " + DEFOPTIONS.get(1));
+				break;
+				default:
+				System.out.println("default action");
+				break;
+			}
 		}
 	}
 }
