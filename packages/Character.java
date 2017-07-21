@@ -12,8 +12,8 @@ public class Character {
 	
 	// Constants:
 	private static final Debug DEBUG = new Debug();
-	private final String SUCCESS =  "It worked, ";
-	private final String FAIL =  "It failed, ";
+	private final String SUCCESS =  "Defense worked, ";
+	private final String FAIL =  "Defense failed, ";
 	private final int ATKONE = 1;
 	private final int ATKTWO = 2;
 	
@@ -82,49 +82,35 @@ public class Character {
 	
 	// Handels the attack and defense actions
 	public void action(boolean attack, int option) {
-		if (attack) {
-			switch(option) {
-				case 1:
-				System.out.println(name + " used " + ATKOPTIONS.get(0));
-				break;
-				case 2:
-				System.out.println(name + " used " + ATKOPTIONS.get(1));
-				break;
-				default:
-				System.out.println("default attack action: " + option);
-				break;
-			}
-		} else {
-			switch(option) {
-				case 1:
-				System.out.println(name + " used " + DEFOPTIONS.get(0));
-				break;
-				case 2:
-				System.out.println(name + " used " + DEFOPTIONS.get(1));
-				break;
-				default:
-				System.out.println("default defense action " + option);
-				break;
-			}
-		}
+		String text = name + " used ";
+		
+		text += attack 
+			? ATKOPTIONS.get(option - 1) 
+			: DEFOPTIONS.get(option - 1);
+		
+		System.out.println(text);
 	}
 	
 	// Displays flavor text if hit and removes one hitpoint
 	public void gotHit(int option) {
-		if (option == ATKONE) {
-			System.out.println(FAIL + name + atkOneText);
-		} else {
-			System.out.println(FAIL + name + atkTwoText);
-		}
+		String text = FAIL + name;
+		
+		text += (option == ATKONE)
+			? atkOneText
+			: atkTwoText;
+		
+		System.out.println(text);
 		hitpoints -= 1;
 	}
 	
 	// Displays flavor text if avoided
 	public void avoid(int option) {
-		if (option == ATKONE) {
-			System.out.println(SUCCESS + name + defOneText);
-		} else {
-			System.out.println(SUCCESS + name + defTwoText);
-		}
+		String text = SUCCESS + name;
+		
+		text += (option == ATKONE)
+			? defOneText
+			: defTwoText;
+		
+		System.out.println(text);
 	}
 }

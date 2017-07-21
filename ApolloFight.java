@@ -1,4 +1,6 @@
 // Import:
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
 import java.util.Random;
@@ -27,8 +29,6 @@ public class ApolloFight {
 	
 	boolean playerInputReq;
 	boolean playerTurn = true;
-	//boolean attackPhase = true;
-	boolean gameOver = false;
 	
 	// Main:
 	public static void main(String[] args) {
@@ -91,28 +91,39 @@ public class ApolloFight {
 	
 	// Keeps alternating turns until game over
 	public void turnHandeler() {
+		boolean gameOver = false;
+
 		while (!gameOver) {
 			playerTurn();
 			enemyTurn();
 			checkHit();
 			toggleTurns();
-			checkGameOver();
+			gameOver = checkGameOver();
 			showStatus();
 		}
-		System.out.println("GAME OVER");
+		System.out.println("GAME OVER ");
 	}
 	
 	// Handels the player turn
-	public void playerTurn() {		
+	public void playerTurn() {
+		String move;
+		List<String> ops;
+		boolean attack;
+		
+		
 		if (playerTurn) {
-			displayOptions(player.getAttackOptions(), "Attack");
-			checkInput();
-			player.action(ATK, playerOption);
+			move = "Attack";
+			ops = player.getAttackOptions();
+			attack = ATK;
 		} else {
-			displayOptions(player.getDefenseOptions(), "Defense");
-			checkInput();
-			player.action(DEF, playerOption);
+			move = "Defense";
+			ops = player.getDefenseOptions();
+			attack = DEF;
 		}
+
+		displayOptions(ops, move);
+		checkInput();
+		player.action(attack, playerOption);
 	}
 	
 	// Handels the enemy turn
@@ -153,10 +164,16 @@ public class ApolloFight {
 	}
 	
 	// Check for game over
-	public void checkGameOver() {
-		if (player.getHitpoints == ZERO || enemy.getHitpoints == ZERO) {
-			gameOver = true;
-			
+	public boolean checkGameOver() {
+		
+		List<Character> players = Arrays.asList(player, enemy);
+		
+		for (Character p : players) {
+			if (p.getHitpoints() == ZERO) {
+				System.out.println(p.getName() + " loses.");
+				return true;
+			}
 		}
+		return false;
 	}
 }
