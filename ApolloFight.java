@@ -1,6 +1,7 @@
 // Import:
 import java.util.List;
 import java.util.Scanner;
+import java.util.Random;
 
 import packages.Character;
 import packages.Debug;
@@ -11,12 +12,18 @@ public class ApolloFight {
 	// Constants:
 	private static final Debug DEBUG = new Debug();
 	private static final Scanner SCANNER = new Scanner(System.in);
+	private static final Random RANDOM = new Random();
+	
+	private final boolean ATK = true;
+	private final boolean DEF = false;
+	private final int ZERO = 0;
 	
 	// Variables:
 	Character player;
 	Character enemy;
 	String input;
-	Integer option;
+	Integer playerOption;
+	Integer enemyOption;
 	
 	boolean playerInputReq;
 	boolean playerTurn = true;
@@ -33,8 +40,6 @@ public class ApolloFight {
 		chooseCharacter();
 		showStatus();
 		turnHandeler();
-		// atkPhase();
-		// turnAction();
 	}
 	
 	
@@ -50,7 +55,7 @@ public class ApolloFight {
 			playerInput();
 			if (input.equals("1") || input.equals("2")) {
 				playerInputReq = false;
-				option = Integer.parseInt(input);
+				playerOption = Integer.parseInt(input);
 			} else {
 				System.out.println("Invalid choice.");
 			}
@@ -84,6 +89,7 @@ public class ApolloFight {
 												 + "(2) " + options.get(1));
 	}
 	
+	// Keeps alternating turns until game over
 	public void turnHandeler() {
 		while (!gameOver) {
 			playerTurn();
@@ -93,28 +99,34 @@ public class ApolloFight {
 			checkGameOver();
 			showStatus();
 		}
+		System.out.println("GAME OVER");
 	}
 	
+	// Handels the player turn
 	public void playerTurn() {		
 		if (playerTurn) {
 			displayOptions(player.getAttackOptions(), "Attack");
 			checkInput();
-			player.action(true, option);
+			player.action(ATK, playerOption);
 		} else {
 			displayOptions(player.getDefenseOptions(), "Defense");
 			checkInput();
-			player.action(false, option);
+			player.action(DEF, playerOption);
 		}
 	}
 	
+	// Handels the enemy turn
 	public void enemyTurn() {
+		enemyOption = RANDOM.nextInt(2) + 1;
+		
 		if (playerTurn) {
-			DEBUG.log("Enemy Defense");
+			enemy.action(DEF, enemyOption);
 		} else {
-			DEBUG.log("Enemy Attack");
+			enemy.action(ATK, enemyOption);
 		}
 	}
 	
+	// Toggles between turns
 	public void toggleTurns() {
 		if (playerTurn) {
 			playerTurn = false;
@@ -123,41 +135,28 @@ public class ApolloFight {
 		}
 	}
 	
+	// Check for hit
 	public void checkHit() {
-		DEBUG.log("Check for Hit.");
+		if (playerTurn) {
+			if (playerOption == enemyOption) {
+				enemy.gotHit(enemyOption);
+			} else {
+				enemy.avoid(enemyOption);
+			}
+		} else {
+			if (enemyOption == playerOption) {
+				player.gotHit(playerOption);
+			} else {
+				player.avoid(playerOption);
+			}
+		}
 	}
 	
+	// Check for game over
 	public void checkGameOver() {
-		DEBUG.log("Check for Game Over.");
+		if (player.getHitpoints == ZERO || enemy.getHitpoints == ZERO) {
+			gameOver = true;
+			
+		}
 	}
-	
-	// Should not be here >>> Character Class methode
-	// public void atkPhase() {
-		// System.out.println("Choose your attack:" + NEWLINE 
-												 // + "(1) " + playerOne.getAttackOptions().get(0)
-												 // + NEWLINE 
-												 // + "(2) " + playerOne.getAttackOptions().get(1));
-		
-		// playerInput();
-		// int atk = getOption();
-		
-		// playerOne.action(playerOneATK, atk);
-	// }
-	
-	// public void turnAction() {
-		// DEBUG.log("P1 ATK: " + playerOneATK);
-		// DEBUG.log("P@ ATK: " + playerTwoATK);
-		// DEBUG.log("Funtion turnAction");
-		
-		// playerOne.action(playerOneATK, Integer.parseInt(input));
-		// playerTwo.action(playerTwoATK, Integer.parseInt(input));
-		// Toggelturns();
-		
-		// DEBUG.log("P1 ATK: " + playerOneATK);
-		// DEBUG.log("P2 ATK: " + playerTwoATK);
-	// }
-	
-	// public int getOption() {
-		// return Integer.parseInt(input);
-	// }
 }

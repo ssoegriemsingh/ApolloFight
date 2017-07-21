@@ -12,12 +12,20 @@ public class Character {
 	
 	// Constants:
 	private static final Debug DEBUG = new Debug();
+	private final String SUCCESS =  "It worked, ";
+	private final String FAIL =  "It failed, ";
+	private final int ATKONE = 1;
+	private final int ATKTWO = 2;
 	
 	private  List<String> ATKOPTIONS = new ArrayList<>();
 	private  List<String> DEFOPTIONS = new ArrayList<>();
 	
 	// Global vars:
 	private String name;
+	private String atkOneText;
+	private String atkTwoText;
+	private String defOneText;
+	private String defTwoText;
 	private int hitpoints = 3;
 	
 	// Main:
@@ -32,11 +40,11 @@ public class Character {
 		ATKOPTIONS.addAll(Arrays.asList("Boardgame Day", "C# coding style"));
 		DEFOPTIONS.addAll(Arrays.asList("Bollywood", "Suriname time"));
 		
-		// "Boardgame Day"; 	It worked, Nik lost at a boardgame
-		// "C# coding style"; 	It worked, Nik is confused by the coding style
+		atkOneText = " got dizzy from the loop-the-loops.";
+		atkTwoText = " was bored to sleep.";
 		
-		// "Bollywood";			It worked, Sheik danced out of the way
-		// "Suriname time";		It worked, Sheik was to late to get hit
+		defOneText = " danced out of the way.";
+		defTwoText = " was to late to get hit.";
 	}
 	
 	public Character(int character) {
@@ -45,13 +53,14 @@ public class Character {
 		ATKOPTIONS.addAll(Arrays.asList("Arial Ace", "Salesforce"));
 		DEFOPTIONS.addAll(Arrays.asList("I'm sorry", "The Russian bear"));
 		
-		// "Arial Ace";			It worked, Sheik got dizzy from the loop-the-loops
-		// "Salesforce";		it worked, Sheik was bored to sleep
+		atkOneText = " lost at a boardgame.";
+		atkTwoText = " is confused by the coding style.";
 		
-		// "I'm sorry";			It worked, Nik charmed his way out
-		// "The Russian bear";	It worked, Nik takes no shit from others
+		defOneText = " charmed his way out.";
+		defTwoText = " takes no shit from others.";
 	}
 	
+	// getName:
 	public String getName() {
 		return name;
 	}
@@ -71,6 +80,7 @@ public class Character {
 		return DEFOPTIONS;
 	}
 	
+	// Handels the attack and defense actions
 	public void action(boolean attack, int option) {
 		if (attack) {
 			switch(option) {
@@ -81,7 +91,7 @@ public class Character {
 				System.out.println(name + " used " + ATKOPTIONS.get(1));
 				break;
 				default:
-				System.out.println("default action");
+				System.out.println("default attack action: " + option);
 				break;
 			}
 		} else {
@@ -93,9 +103,28 @@ public class Character {
 				System.out.println(name + " used " + DEFOPTIONS.get(1));
 				break;
 				default:
-				System.out.println("default action");
+				System.out.println("default defense action " + option);
 				break;
 			}
+		}
+	}
+	
+	// Displays flavor text if hit and removes one hitpoint
+	public void gotHit(int option) {
+		if (option == ATKONE) {
+			System.out.println(FAIL + name + atkOneText);
+		} else {
+			System.out.println(FAIL + name + atkTwoText);
+		}
+		hitpoints -= 1;
+	}
+	
+	// Displays flavor text if avoided
+	public void avoid(int option) {
+		if (option == ATKONE) {
+			System.out.println(SUCCESS + name + defOneText);
+		} else {
+			System.out.println(SUCCESS + name + defTwoText);
 		}
 	}
 }
